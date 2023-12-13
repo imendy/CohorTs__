@@ -1,22 +1,26 @@
-"use client"
-import React, { FC, useState } from "react"
-import Heading from "./utils/Heading"
-import Header from "./components/Header"
-import Hero from "./components/Route/Hero"
+'use client'
 
-interface Props {}
+import React, { FC, useState } from 'react'
+import Protected from '../hooks/useProtected'
+import Heading from '../utils/Heading'
+import Header from '../components/Header'
+import Profile from '../components/Profile/Profile'
+import { useSelector } from 'react-redux'
 
+type Props = {}
 
-const Page: FC<Props> = (props) => {
+const page: FC<Props> = (props) => {
   const [open, setOpen] = useState(false)
-  const [activeItem, setActiveItem] = useState(0)
+  const [activeItem, setActiveItem] = useState(5)
   const [route, setRoute] = useState('Login')
 
-
+  const {user} = useSelector((state: any) => state.auth)
+ 
   return (
     <div>
-         <Heading 
-           title="CohorTs" 
+        <Protected>
+        <Heading 
+           title={`${user.name}'s Profile - CohorTs`}
            description="Cohorts is an ELearning platform for students to learn and get help from teachers" 
            keywords="Programming, React, Redux, Next, MERN, Machine Learning, Typescript, Javascript, Phython, AI Programming, Graphic Design, Product Design, Project Management" 
            />
@@ -28,9 +32,10 @@ const Page: FC<Props> = (props) => {
              setRoute={setRoute}  
              route={route}
              />
-             <Hero />
+             <Profile  user={user}/>
+        </Protected>
     </div>
   )
 }
 
-export default Page
+export default page
